@@ -26,9 +26,13 @@ Grid styles
     display: flex;
 }
 
-.padding{
- padding-left: 7em;
- padding-right:7em;
+.padding {
+    padding-left: 7em;
+    padding-right: 7em;
+}
+
+body {
+    height: 100vh;
 }
 
 
@@ -71,28 +75,29 @@ Images
 Header
 ====
 */
-nav.flex{
-  /*flex-direction: row;*/
+.navbar{
+  height:5em;
 }
 
-.navbar-right{
-  font-size: 1em;
-  padding: .50em;
-}
-.navbar-brand{
-  box-sizing: border-box;
-  padding: .50em;
-  height: 10em;
+.navbar-right {
+    font-size: 1em;
+    padding: .50em;
 }
 
-.navbar-brand img{
+.navbar-brand {
+    box-sizing: border-box;
+    padding: .50em;
+    height: 8em;
+}
+
+.navbar-brand img {
     max-width: 100%;
     max-height: 100%;
 }
 
 .shrink {
-  height: 7em;
-  font-size: 1em;
+    height: 7em;
+    font-size: 1em;
 }
 
 
@@ -102,15 +107,76 @@ Main body
 ====
 */
 
-body {
-    height: 200vh;
+main {
+    /*margin-top: 13em;*/
+}
+
+.jumbotron .events {
+    height: 100%;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom:0;
+}
+
+
+
+.jumbotron h1{
+  text-align: center;
+  color: #ffffff;
+  margin:auto;
+}
+
+div.events h3, div.events p {
+    background-color: #033c73;
+    border-radius: 0.25em;
+    color: white;
+    padding: 0.25em;
+    text-align: center;
+
+}
+
+.hover {
+  color: #ffffff !important;
+  background-color: #022f5a !important;
+}
+
+a, a:hover {
+  text-decoration: none;
 }
 
 .jumbotron {
-  background-image: url("
-https://s3-us-west-2.amazonaws.com/rmgc-web-images/Rival+Images/UF+v+LSU.jpg");
+    background-image: url("https://s3-us-west-2.amazonaws.com/rmgc-web-images/Template+Images/the-swamp-dark.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 70vh;
+    flex-direction: column;
+    justify-content:space-around;
+    margin-bottom: 5%;
+    padding:0;
+}
+
+hgroup{
+  margin:auto;
+}
+
+.thumbnail{
+  min-height: 65vh;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.thumbnail img{
+  max-height: 300px;
 
 }
+
+.caption{
+  min-height: 9em;
+
+}
+
 
 /*
 ====
