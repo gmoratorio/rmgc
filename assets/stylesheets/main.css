@@ -150,7 +150,7 @@ a, a:hover {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 70vh;
+    height: 100vh;
     flex-direction: column;
     justify-content:space-around;
     margin-bottom: 5%;
@@ -169,6 +169,7 @@ hgroup{
 
 .thumbnail img{
   max-height: 300px;
+  border-radius: 5px;
 
 }
 
