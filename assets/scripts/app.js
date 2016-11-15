@@ -3,7 +3,6 @@ $(document).ready(function() {
     for (var i = 1; i < 5; i++) {
         $.getJSON("http://spreadsheets.google.com/feeds/cells/1ouyI7JWT2agLynYywzFkqnOzID8u9Q5FeSR1ZhPz1Rk/" + i + "/public/basic?alt=json-in-script&callback=?")
             .done(function(data) {
-                // console.log(data.feed);
                 populatePage(data);
 
             })
@@ -19,20 +18,20 @@ $(document).ready(function() {
 
 function populatePage(data) {
     var thisFeed = data.feed;
-    var title = thisFeed.title.$t;
+    var title = thisFeed.title.$t.toLowerCase();
 
     switch (title) {
-        case "Master-Template":
-            createTemplate(thisFeed);
+        case "master-template":
+            replace(thisFeed, title);
             break;
 
-        case "Events":
+        case "events":
             break;
 
-        case "Announcements":
+        case "announcements":
             break;
 
-        case "Officers":
+        case "officers":
             break;
 
 
@@ -41,19 +40,29 @@ function populatePage(data) {
 
 }
 
-function createTemplate(feed) {
+function replace(feed, title) {
     var objArr = feed.entry;
     var summaryObject = returnSummaryObject(objArr);
-    console.log(summaryObject);
-    var headerArr = summaryObject.headerArr;
-    for (var i = 0; i < headerArr.length; i++) {
-        var heading = headerArr[i];
-        var $thisElement = $("." + heading)[0];
+    var workingObject = summaryObject.rowEntryArray[0];
+    for (var key in workingObject) {
+        var value = workingObject[key];
+        var $thisElement = $("." + key)[0];
 
 
+        if (key.indexOf("image") >= 0) {
 
+            if (key.indexOf("background") >= 0) {
+                $($thisElement).css("background-image", "url('" + value + "')");
+            } else {
+                $($thisElement).attr("src", value);
+            }
+        }
 
+        if (key.indexOf("text") >= 0) {
+            $($thisElement).text(value);
+        }
     }
+
 
 }
 
@@ -108,10 +117,11 @@ function returnSummaryObject(objectArray) {
         row = returnRow(cellTitle);
         column = returnColumn(cellTitle);
         if (i === 0) {
+            summaryObject.dataType = cellContent;
+        } else if (i === 1) {
             headerRow = row;
             countOfRows += 1;
         }
-
         if (row === headerRow) {
             headerLength += 1;
             headerArr.push(cellContent);
@@ -120,30 +130,55 @@ function returnSummaryObject(objectArray) {
             countOfRows += 1;
             lastRow = row;
         }
+
     }
-
-
 
     summaryObject.headerArr = headerArr;
     summaryObject.countOfRows = countOfRows;
     summaryObject.countOfColumns = headerLength;
-
-    // lastRow = 0;
-    // for (var j = (summaryObject.countOfColumns); j < objectArray.length; j++) {
-    //     row = 0;
-    //     column = "";
-    //     var thisObject = objectArray[i];
-    //     var title = thisObject.title.$t;
-    //     var content = thisObject.content.$t;
-    //     row = returnRow(title);
-    //     column = returnColumn(title);
-    //     if(j === summaryObject.countOfColumns){
-    //       lastRow = row;
-    //     }
-    // }
-    
+    var rowCount = 2;
+    var j = summaryObject.countOfColumns + 1;
     row = 0;
-    while(row < summaryObject.countOfRows ){
+    lastRow = 0;
+    column = 0;
+    lastColumn = 0;
+    var nextColumn = 0;
+
+
+    while (rowCount < summaryObject.countOfRows) {
+        var thisEntryObj = {};
+
+        for (var k = 0; k < summaryObject.countOfColumns; j++, k++) {
+            var thisEntry = objectArray[j];
+            var title = thisEntry.title.$t;
+            var content = thisEntry.content.$t;
+            var header = summaryObject.headerArr[k];
+            row = returnRow(title);
+            column = returnColumn(title);
+            if (column !== lastColumn) {
+
+                thisEntryObj[header] = content;
+                lastColumn = returnColumn(title);
+            } else if (column === lastColumn) {
+                var holdP = thisEntryObj[header];
+                if (holdP.constructor === Array) {
+                    thisEntryObj[header].push(content);
+                } else {
+                    thisEntryObj[header] = [holdP];
+                    thisEntryObj[header].push(content);
+                }
+                rowCount += 1;
+            }
+            if (j < objectArray.length - 1) {
+                nextColumn = returnColumn(objectArray[j + 1].title.$t);
+                if (column === nextColumn) {
+                    k--;
+                }
+            }
+
+        }
+        summaryObject.rowEntryArray.push(thisEntryObj);
+        rowCount += 1;
 
     }
 

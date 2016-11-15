@@ -147,7 +147,7 @@ a, a:hover {
 }
 
 .jumbotron {
-    background-image: url("https://s3-us-west-2.amazonaws.com/rmgc-web-images/Template+Images/the-swamp-dark.jpg");
+    /*background-image: url("https://s3-us-west-2.amazonaws.com/rmgc-web-images/Template+Images/the-swamp-dark.jpg");*/
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
