@@ -147,7 +147,6 @@ a, a:hover {
 }
 
 .jumbotron {
-    /*background-image: url("https://s3-us-west-2.amazonaws.com/rmgc-web-images/Template+Images/the-swamp-dark.jpg");*/
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -158,10 +157,16 @@ a, a:hover {
     padding:0;
 }
 
+.jumbotron.events{
+  height: 50vh;
+  margin-bottom: 3%;
+}
+
 hgroup{
   margin:auto;
 }
 
+/*Standard Thumbnails*/
 .thumbnail{
   min-height: 55vh;
   flex-direction: column;
@@ -183,6 +188,34 @@ hgroup{
 section.figures{
    margin-bottom: 3%;
 }
+
+/*Announcement Thumbnails*/
+.announcement h2{
+  font-size: 3em;
+  text-align: center;
+  font-weight: bold;
+}
+.thumbnail.announcement {
+  min-height: 55vh;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.announcement img{
+  max-height: 300px;
+  padding: 1em;
+  border-radius: 1.5em;
+
+}
+
+.announcement.caption{
+  min-height: 9em;
+
+}
+
+/*section.figures{
+   margin-bottom: 3%;
+}*/
 
 
 /*

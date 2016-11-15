@@ -26,6 +26,7 @@ function populatePage(data) {
             break;
 
         case "events":
+            append(thisFeed, title);
             break;
 
         case "announcements":
@@ -63,6 +64,30 @@ function replace(feed, title) {
         }
     }
 
+
+}
+
+function append(feed, title){
+  var $thisElement = $("." + title)[0];
+  console.log($thisElement);
+  var objArr = feed.entry;
+  var summaryObject = returnSummaryObject(objArr);
+  var workingObject = summaryObject.rowEntryArray[0];
+  // var $wellDiv = $('<div class = "well well-lg">');
+  // var $media = $('<div class="media">');
+  // var $mediaLeft = $('<div class="media-left">');
+  // var $mediaObject = $('<img class="media-object" src="#" alt="UF vs LSU">');
+  //
+  // var $mediaBody = $('<div class="media-body">');
+  // var
+
+  var $wellDivMedia = $('<div class = "well well-lg"><div class="media"></div></div>');
+  var $mediaLeft = $('<div class="media-left"></div>');
+  var $mediaImage = $('<img class="media-object" src="#" alt="">');
+
+  var $mediaBody = $('<div class="media-body"><h2 class="media-heading"></h2><a href="#"></a><address></address></div>');
+
+  console.log($wellDiv[0]);
 
 }
 
