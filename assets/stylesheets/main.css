@@ -157,7 +157,7 @@ a, a:hover {
     padding:0;
 }
 
-.jumbotron.events{
+.jumbotron.sub-page-size{
   height: 50vh;
   margin-bottom: 3%;
 }
@@ -190,11 +190,11 @@ section.figures{
 }
 
 /*Announcement Thumbnails*/
-.announcement h2{
+/*.announcement h2{
   font-size: 3em;
   text-align: center;
   font-weight: bold;
-}
+}*/
 .thumbnail.announcement {
   min-height: 55vh;
   flex-direction: column;
@@ -202,11 +202,12 @@ section.figures{
 }
 
 .announcement img{
-  max-height: 300px;
+  width: 30vw;
   padding: 1em;
   border-radius: 1.5em;
-
 }
+
+
 
 .announcement.caption{
   min-height: 9em;

@@ -67,27 +67,59 @@ function replace(feed, title) {
 
 }
 
-function append(feed, title){
-  var $thisElement = $("." + title)[0];
-  console.log($thisElement);
-  var objArr = feed.entry;
-  var summaryObject = returnSummaryObject(objArr);
-  var workingObject = summaryObject.rowEntryArray[0];
-  // var $wellDiv = $('<div class = "well well-lg">');
-  // var $media = $('<div class="media">');
-  // var $mediaLeft = $('<div class="media-left">');
-  // var $mediaObject = $('<img class="media-object" src="#" alt="UF vs LSU">');
-  //
-  // var $mediaBody = $('<div class="media-body">');
-  // var
+function append(feed, title) {
+    var $parentSection = $("." + title)[0];
+    // console.log($parentSection);
+    var objArr = feed.entry;
+    var summaryObject = returnSummaryObject(objArr);
+    var entryArray = summaryObject.rowEntryArray;
+    for (var i = 0; i < entryArray.length; i++) {
+        var workingObject = summaryObject.rowEntryArray[i];
+        console.log(workingObject);
 
-  var $wellDivMedia = $('<div class = "well well-lg"><div class="media"></div></div>');
-  var $mediaLeft = $('<div class="media-left"></div>');
-  var $mediaImage = $('<img class="media-object" src="#" alt="">');
+        var $media = $('<div class="media"></div>');
+        var $mediaLeft = $('<div class="media-left "></div>');
+        var $mediaImage = $('<img class="media-object" src="' + workingObject.image + '" alt="">');
+        $mediaLeft.append($mediaImage);
+        $media.append($mediaLeft);
 
-  var $mediaBody = $('<div class="media-body"><h2 class="media-heading"></h2><a href="#"></a><address></address></div>');
 
-  console.log($wellDiv[0]);
+        var $mediaBody = $('<div class="media-body"></div>');
+        var $h3 = $('<h3 class="media-heading">' + workingObject.date + '</h3>');
+        $mediaBody.append($h3);
+
+        var $h2 = $('<h2 class="media-heading">' + workingObject.title + '</h2>');
+        $mediaBody.append($h2);
+
+
+
+        var contentArr = workingObject.content;
+        for (var j = 0; j < contentArr.length; j++) {
+            var thisContent = contentArr[j];
+            var $p = $('<p>' + thisContent + '</p>');
+            $mediaBody.append($p);
+        }
+
+        var $address = $('<address>' + '<a href="' + workingObject["venue-link"] + '" target="_blank">' + workingObject.venue + '</a> ' + workingObject.address + '</address>');
+        $mediaBody.append($address);
+
+        var $facebook = $('<a href="' + workingObject['fb-link'] + '"><p>Click to RSVP on our Facebook event</p></a>');
+        $mediaBody.append($facebook);
+        $media.append($mediaBody);
+
+        var $wellDiv = $('<div class = "well well-lg announcement"></div>');
+        $wellDiv.append($media);
+
+        $parentSection.append($wellDiv[0]);
+    }
+
+
+
+
+
+
+
+
 
 }
 
