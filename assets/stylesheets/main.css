@@ -33,6 +33,7 @@ Grid styles
 
 body {
     height: 100vh;
+    /*background-color: #317eac;*/
 }
 
 
@@ -153,7 +154,7 @@ a, a:hover {
     height: 100vh;
     flex-direction: column;
     justify-content:space-around;
-    margin-bottom: 5%;
+    margin-bottom: 10%;
     padding:0;
 }
 
@@ -162,14 +163,15 @@ hgroup{
 }
 
 .thumbnail{
-  min-height: 65vh;
+  min-height: 55vh;
   flex-direction: column;
   justify-content: space-between;
 }
 
 .thumbnail img{
-  max-height: 300px;
-  border-radius: 5px;
+  max-height: 250px;
+  padding: 1em;
+  border-radius: 1.5em;
 
 }
 
@@ -178,9 +180,25 @@ hgroup{
 
 }
 
+section.figures{
+   margin-bottom: 3%;
+}
+
 
 /*
 ====
 Footer
 ====
 */
+
+footer, .footer{
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.footer{
+ justify-content: space-around;
+ align-items: center;
+ color: #ffffff;
+
+}
