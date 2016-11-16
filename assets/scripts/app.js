@@ -3,14 +3,23 @@ $(document).ready(function() {
     for (var i = 1; i < 5; i++) {
         $.getJSON("http://spreadsheets.google.com/feeds/cells/1ouyI7JWT2agLynYywzFkqnOzID8u9Q5FeSR1ZhPz1Rk/" + i + "/public/basic?alt=json-in-script&callback=?")
             .done(function(data) {
-                populatePage(data);
+
+                var path = window.location.pathname;
+                path = path.replace("/","");
+                path = path.replace("html", "");
+                path = path.replace(".", "");
+                var thisFeed = data.feed;
+                var title = thisFeed.title.$t.toLowerCase();
+                if((path === title)|| title ===  "master-template"){
+                  populatePage(data);
+                }
+
 
             })
             .fail(function(data) {
                 console.log(data);
             });
 
-        // populatePages();
     }
 
 
@@ -30,6 +39,7 @@ function populatePage(data) {
             break;
 
         case "announcements":
+            append(thisFeed, title);
             break;
 
         case "officers":
@@ -69,13 +79,11 @@ function replace(feed, title) {
 
 function append(feed, title) {
     var $parentSection = $("." + title)[0];
-    // console.log($parentSection);
     var objArr = feed.entry;
     var summaryObject = returnSummaryObject(objArr);
     var entryArray = summaryObject.rowEntryArray;
     for (var i = 0; i < entryArray.length; i++) {
         var workingObject = summaryObject.rowEntryArray[i];
-        console.log(workingObject);
 
         var $media = $('<div class="media"></div>');
         var $mediaLeft = $('<div class="media-left "></div>');
@@ -100,15 +108,23 @@ function append(feed, title) {
             $mediaBody.append($p);
         }
 
-        var $address = $('<address>' + '<a href="' + workingObject["venue-link"] + '" target="_blank">' + workingObject.venue + '</a> ' + workingObject.address + '</address>');
-        $mediaBody.append($address);
+        if(workingObject.venue && workingObject.address){
+          var $address = $('<address>' + '<a href="' + workingObject["venue-link"] + '" target="_blank">' + workingObject.venue + '</a> ' + workingObject.address + '</address>');
+          $mediaBody.append($address);
+        }
 
-        var $facebook = $('<a href="' + workingObject['fb-link'] + '"><p>Click to RSVP on our Facebook event</p></a>');
-        $mediaBody.append($facebook);
+
+        if(workingObject['fb-link']){
+          var $facebook = $('<a href="' + workingObject['fb-link'] + '" target="_blank"><p>Click to RSVP on our Facebook event</p></a>');
+          $mediaBody.append($facebook);
+
+        }
+
         $media.append($mediaBody);
-
+        // debugger;
         var $wellDiv = $('<div class = "well well-lg announcement"></div>');
         $wellDiv.append($media);
+        // console.log($wellDiv[0]);
 
         $parentSection.append($wellDiv[0]);
     }
@@ -130,12 +146,13 @@ function returnRow(title) {
     for (var i = 0; i < title.length; i++) {
         var thisCharCode = title.charCodeAt(i);
         if (thisCharCode >= 48 && thisCharCode <= 57) {
-            rowCode += thisCharCode;
+            rowCode += String.fromCharCode(thisCharCode).toString();
+
+
         }
     }
 
-    row = String.fromCharCode(rowCode);
-    row = parseInt(row);
+    row = parseInt(rowCode);
     return row;
 }
 
@@ -206,6 +223,7 @@ function returnSummaryObject(objectArray) {
         var thisEntryObj = {};
 
         for (var k = 0; k < summaryObject.countOfColumns; j++, k++) {
+            // debugger;
             var thisEntry = objectArray[j];
             var title = thisEntry.title.$t;
             var content = thisEntry.content.$t;
