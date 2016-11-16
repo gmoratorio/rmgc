@@ -158,15 +158,14 @@ function newPosts(feed, title) {
             var $col4 = $('<div class="col-sm-4"></div>');
             var $img = $('<img class = "img-responsive center-block" src="' + thisObject.image + '"/>');
             $col4.append($img);
-            if(count%2 === 0){
-              $rowWell.append($col8);
-              $rowWell.append($col4);
+            if (count % 2 === 0) {
+                $rowWell.append($col8);
+                $rowWell.append($col4);
+            } else {
+                $rowWell.append($col4);
+                $rowWell.append($col8);
             }
-            else{
-              $rowWell.append($col4);
-              $rowWell.append($col8);
-            }
-            count +=1;
+            count += 1;
             $parentSection.append($rowWell[0]);
         }
 
