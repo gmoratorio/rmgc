@@ -214,10 +214,19 @@ section.figures{
 
 }
 
-/*section.figures{
-   margin-bottom: 3%;
+/*Membership Images*/
+/*.membership img{
+
 }*/
 
+.membership div.flex{
+  flex-direction: row;
+  align-items: center;
+}
+
+.membership div a{
+  margin:auto;
+}
 
 /*
 ====
