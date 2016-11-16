@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     for (var i = 1; i < 6; i++) {
-        $.getJSON("http://spreadsheets.google.com/feeds/cells/1ouyI7JWT2agLynYywzFkqnOzID8u9Q5FeSR1ZhPz1Rk/" + i + "/public/basic?alt=json-in-script&callback=?")
+        $.getJSON("https://spreadsheets.google.com/feeds/cells/1ouyI7JWT2agLynYywzFkqnOzID8u9Q5FeSR1ZhPz1Rk/" + i + "/public/basic?alt=json-in-script&callback=?")
             .done(function(data) {
 
                 var path = window.location.pathname;
