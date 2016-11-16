@@ -216,14 +216,12 @@ function returnRow(title) {
         var thisCharCode = title.charCodeAt(i);
         if (thisCharCode >= 48 && thisCharCode <= 57) {
             rowCode += String.fromCharCode(thisCharCode).toString();
-
-
         }
     }
-
     row = parseInt(rowCode);
     return row;
 }
+
 
 
 function returnColumn(title) {
@@ -237,6 +235,7 @@ function returnColumn(title) {
     }
     return columnLetter;
 }
+
 
 
 
@@ -273,7 +272,6 @@ function returnSummaryObject(objectArray) {
             countOfRows += 1;
             lastRow = row;
         }
-
     }
 
     summaryObject.headerArr = headerArr;
