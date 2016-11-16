@@ -228,6 +228,31 @@ section.figures{
   margin:auto;
 }
 
+/*Officers*/
+.officers .thumbnail h2{
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.officers .thumbnail h3{
+  margin-top: 0.15em;
+  padding-bottom: 0;
+}
+
+.officers .thumbnail{
+  height: 100%;
+}
+
+.officers .column{
+  margin-bottom: 3em;
+}
+
+.officers div.flex{
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+
 /*
 ====
 Footer

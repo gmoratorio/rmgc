@@ -47,6 +47,7 @@ function populatePage(data) {
             break;
 
         case "officers":
+            newPosts(thisFeed, title);
             break;
 
 
@@ -87,13 +88,14 @@ function newPosts(feed, title) {
     var objArr = feed.entry;
     var summaryObject = returnSummaryObject(objArr);
     var entryArray = summaryObject.rowEntryArray;
+    var workingObject = {};
     if ((title === "events") || (title === "announcements")) {
         for (var i = 0; i < entryArray.length; i++) {
-            var workingObject = summaryObject.rowEntryArray[i];
+            workingObject = summaryObject.rowEntryArray[i];
 
             var $media = $('<div class="media"></div>');
             var $mediaLeft = $('<div class="media-left "></div>');
-            var $mediaImage = $('<img class="media-object" src="' + workingObject.image + '" alt="">');
+            var $mediaImage = $('<img class="media-object" src="' + workingObject.image + '" alt="' + workingObject.title + '">');
             $mediaLeft.append($mediaImage);
             $media.append($mediaLeft);
 
@@ -137,16 +139,16 @@ function newPosts(feed, title) {
     } else if (title === "membership") {
         var count = 0;
         for (var k = 0; k < entryArray.length; k++) {
-            var thisObject = summaryObject.rowEntryArray[k];
+            workingObject = summaryObject.rowEntryArray[k];
             var $rowWell = $('<div class="row well flex"></div>');
 
             var $col8 = $('<div class="col-sm-8"></div>');
-            var $h2Center = $('<h2 class="text-center">' + thisObject.title + '</h2>');
+            var $h2Center = $('<h2 class="text-center">' + workingObject.title + '</h2>');
             var $divFlex = $('<div class="flex"></div>');
-            var $aBtn = $('<a class="btn btn-primary" href="' + thisObject['btn-link'] + '" target="_blank" role="button">' + thisObject['btn-text'] + '</a>');
+            var $aBtn = $('<a class="btn btn-primary" href="' + workingObject['btn-link'] + '" target="_blank" role="button">' + workingObject['btn-text'] + '</a>');
             $col8.append($h2Center);
 
-            var textArr = thisObject.content;
+            var textArr = workingObject.content;
             for (var l = 0; l < textArr.length; l++) {
                 var content = textArr[l];
                 var $pText = $('<p>' + content + '</p>');
@@ -156,7 +158,7 @@ function newPosts(feed, title) {
             $col8.append($divFlex);
 
             var $col4 = $('<div class="col-sm-4"></div>');
-            var $img = $('<img class = "img-responsive center-block" src="' + thisObject.image + '"/>');
+            var $img = $('<img class = "img-responsive center-block" src="' + workingObject.image + '"/>');
             $col4.append($img);
             if (count % 2 === 0) {
                 $rowWell.append($col8);
@@ -169,15 +171,39 @@ function newPosts(feed, title) {
             $parentSection.append($rowWell[0]);
         }
 
+    } else if (title === "officers") {
+      var $standardRow = $('<div class="row flex"></div>');
+        for (var m = 0; m < entryArray.length; m++) {
+            workingObject = summaryObject.rowEntryArray[m];
+
+
+            var $col = $('<div class="col-sm-6 col-md-4 column"></div>');
+            var $thumbnail = $('<div class="thumbnail flex"></div>');
+            $col.append($thumbnail);
+
+            var $h2Centered = $('<h2 class="text-center">' + workingObject.title + '</h2>');
+            var $h3Centered = $('<h3 class="text-center">' + workingObject.name + '</h3>');
+            var $officerImg = $('<img class = "img-responsive" src="' + workingObject['photo-link'] + '" alt="' + workingObject.name + '"/>');
+            $thumbnail.append($h2Centered);
+            $thumbnail.append($h3Centered);
+            $thumbnail.append($officerImg);
+
+            var $caption = $('<div class="caption"></div>');
+            var $h4 = $('<h4>' + workingObject['fun-fact-heading'] + '</h4>');
+            var $pFunFact = $('<p>' + workingObject['fun-fact'] + '</p>');
+            $caption.append($h4);
+            $caption.append($pFunFact);
+
+            $thumbnail.append($caption);
+
+            $standardRow.append($col);
+
+
+
+        }
+        $parentSection.append($standardRow[0]);
 
     }
-
-
-
-
-
-
-
 
 
 }
@@ -264,9 +290,7 @@ function returnSummaryObject(objectArray) {
 
     while (rowCount < summaryObject.countOfRows) {
         var thisEntryObj = {};
-
         for (var k = 0; k < summaryObject.countOfColumns; j++, k++) {
-            // debugger;
             var thisEntry = objectArray[j];
             var title = thisEntry.title.$t;
             var content = thisEntry.content.$t;
