@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    for (var i = 1; i < 6; i++) {
+    for (var i = 2; i < 8; i++) {
         $.getJSON("https://spreadsheets.google.com/feeds/cells/1ouyI7JWT2agLynYywzFkqnOzID8u9Q5FeSR1ZhPz1Rk/" + i + "/public/basic?alt=json-in-script&callback=?")
             .done(function(data) {
 
@@ -29,36 +29,17 @@ function populatePage(data) {
     var thisFeed = data.feed;
     var title = thisFeed.title.$t.toLowerCase();
 
-    switch (title) {
-        case "master-template":
-            replace(thisFeed, title);
-            break;
+    importTemplate(thisFeed, title);
 
-        case "events":
-            newPosts(thisFeed, title);
-            break;
-
-        case "announcements":
-            newPosts(thisFeed, title);
-            break;
-
-        case "membership":
-            newPosts(thisFeed, title);
-            break;
-
-        case "officers":
-            newPosts(thisFeed, title);
-            break;
-
-
-
+    if (title !== "master-template") {
+        newPosts(thisFeed, title);
     }
 
 }
 
-function replace(feed, title) {
+function importTemplate(feed, title) {
     var objArr = feed.entry;
-    var summaryObject = returnSummaryObject(objArr);
+    var summaryObject = returnSummaryObject(objArr, "template");
     var workingObject = summaryObject.rowEntryArray[0];
     for (var key in workingObject) {
         var value = workingObject[key];
@@ -86,7 +67,7 @@ function newPosts(feed, title) {
 
     var $parentSection = $("." + title)[0];
     var objArr = feed.entry;
-    var summaryObject = returnSummaryObject(objArr);
+    var summaryObject = returnSummaryObject(objArr, "append");
     var entryArray = summaryObject.rowEntryArray;
     var workingObject = {};
     if ((title === "events") || (title === "announcements")) {
@@ -172,7 +153,7 @@ function newPosts(feed, title) {
         }
 
     } else if (title === "officers") {
-      var $standardRow = $('<div class="row flex"></div>');
+        var $standardRow = $('<div class="row flex"></div>');
         for (var m = 0; m < entryArray.length; m++) {
             workingObject = summaryObject.rowEntryArray[m];
 
@@ -202,6 +183,34 @@ function newPosts(feed, title) {
 
         }
         $parentSection.append($standardRow[0]);
+
+    } else if (title === "index") {
+        var $stdRow = $('<div class="row"></div>');
+
+        for (var n = 0; n < entryArray.length; n++) {
+            workingObject = summaryObject.rowEntryArray[n];
+            var $col3 = $('<div class="col-sm-6 col-md-3"></div>');
+            var $aThumb = $('<a href="' + workingObject.title.toLowerCase() + '.html"></a>');
+            $col3.append($aThumb);
+
+            var $flexThumb = $('<div class="thumbnail flex"></div>');
+            $aThumb.append($flexThumb);
+
+            var $thumbImage = $('<img src="' + workingObject['photo-link'] + '" alt="' + workingObject.title + '">');
+            $flexThumb.append($thumbImage);
+
+            var $divCaption = $('<div class="caption"></div>');
+            $flexThumb.append($divCaption);
+
+            var $captionH3 = $('<h3>' + workingObject.title + '</h3>');
+            var $captionP = $('<p>' + workingObject.description + '</p>');
+            $divCaption.append($captionH3);
+            $divCaption.append($captionP);
+
+            $stdRow.append($col3);
+
+        }
+        $parentSection.append($stdRow[0]);
 
     }
 
@@ -240,18 +249,50 @@ function returnColumn(title) {
 
 
 
-function returnSummaryObject(objectArray) {
+function returnSummaryObject(objectArray, type) {
     var summaryObject = {};
     summaryObject.rowEntryArray = [];
     var headerRow = 0;
     var headerLength = 0;
     var headerArr = [];
     var countOfRows = 0;
+    var countOfTemplateRows = 0;
     var row = 0;
     var lastRow = 0;
     var column = "";
+    var start = 0;
+    var end = 0;
+    var endTemplateIndex = 0;
+    // debugger;
+    for (var h = 0; h < objectArray.length; h++) {
+        var currentCell = objectArray[h];
+        var currentContent = currentCell.content.$t;
+        var currentTitle = currentCell.title.$t;
+        row = returnRow(currentTitle);
 
-    for (var i = 0; i < objectArray.length; i++) {
+        if (row !== lastRow) {
+            countOfTemplateRows += 1;
+            lastRow = row;
+        }
+
+
+        if (currentContent === "end-template") {
+            endTemplateIndex = h;
+            break;
+        }
+    }
+
+    if (type === "template") {
+        start = 0;
+        end = endTemplateIndex + 1;
+    } else {
+        start = endTemplateIndex + 1;
+        end = objectArray.length;
+
+    }
+    // debugger;
+    lastRow = 0;
+    for (var i = start; i < end; i++) {
         row = 0;
         column = "";
         var thisObj = objectArray[i];
@@ -259,11 +300,12 @@ function returnSummaryObject(objectArray) {
         var cellContent = thisObj.content.$t;
         row = returnRow(cellTitle);
         column = returnColumn(cellTitle);
-        if (i === 0) {
+        if (i === start) {
             summaryObject.dataType = cellContent;
-        } else if (i === 1) {
+        } else if (i === start + 1) {
             headerRow = row;
             countOfRows += 1;
+
         }
         if (row === headerRow) {
             headerLength += 1;
@@ -279,8 +321,8 @@ function returnSummaryObject(objectArray) {
     summaryObject.headerArr = headerArr;
     summaryObject.countOfRows = countOfRows;
     summaryObject.countOfColumns = headerLength;
-    var rowCount = 2;
-    var j = summaryObject.countOfColumns + 1;
+    var rowCount = 3;
+    var j = start + summaryObject.countOfColumns + 1;
     row = 0;
     lastRow = 0;
     column = 0;
@@ -288,12 +330,15 @@ function returnSummaryObject(objectArray) {
     var nextColumn = 0;
 
 
-    while (rowCount < summaryObject.countOfRows) {
+    while (rowCount < summaryObject.countOfRows + 1) {
         var thisEntryObj = {};
         for (var k = 0; k < summaryObject.countOfColumns; j++, k++) {
             var thisEntry = objectArray[j];
             var title = thisEntry.title.$t;
             var content = thisEntry.content.$t;
+            if (content === "end-template") {
+                break;
+            }
             var header = summaryObject.headerArr[k];
             row = returnRow(title);
             column = returnColumn(title);
