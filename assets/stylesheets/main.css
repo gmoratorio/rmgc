@@ -174,7 +174,6 @@ hgroup{
 }
 
 .thumbnail img{
-  max-height: 250px;
   padding: 1em;
   border-radius: 1.5em;
 
@@ -190,11 +189,7 @@ section.figures{
 }
 
 /*Announcement Thumbnails*/
-/*.announcement h2{
-  font-size: 3em;
-  text-align: center;
-  font-weight: bold;
-}*/
+
 .thumbnail.announcement {
   min-height: 55vh;
   flex-direction: column;
@@ -215,9 +210,7 @@ section.figures{
 }
 
 /*Membership Images*/
-/*.membership img{
 
-}*/
 
 .membership div.flex{
   flex-direction: row;
@@ -227,6 +220,7 @@ section.figures{
 .membership div a{
   margin:auto;
 }
+
 
 /*Officers*/
 .officers .thumbnail h2{
@@ -239,10 +233,17 @@ section.figures{
   padding-bottom: 0;
 }
 
-.officers .thumbnail{
-  height: 100%;
-  
+.officers .thumbnail hgroup{
+  height: 20%;
+  margin-bottom: 0;
+  margin-top:0;
 }
+
+
+.officers .thumbnail img{
+  height: 40%;
+}
+
 
 .officers .column{
   margin-bottom: 3em;
@@ -250,9 +251,31 @@ section.figures{
 
 .officers div.flex{
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
 }
 
+section.container-fluid.figures.officers{
+  width:90%;
+}
+
+.officers div.thumbnail.flex{
+  flex-direction: column;
+  justify-content:flex-start;
+  height: 80vh;
+}
+
+.officers .thumbnail .caption {
+  height: 35%;
+}
+
+
+.officers .thumbnail p{
+  height:80%;
+  overflow: scroll;
+
+
+
+}
 
 /*
 ====
