@@ -113,7 +113,6 @@ function newPosts(feed, title) {
             if (workingObject['fb-link']) {
                 var $facebook = $('<a href="' + workingObject['fb-link'] + '" target="_blank"><p>Click to RSVP on our Facebook event</p></a>');
                 $mediaBody.append($facebook);
-
             }
 
             $media.append($mediaBody);
