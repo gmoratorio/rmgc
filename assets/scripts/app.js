@@ -3,13 +3,20 @@ $(document).ready(function() {
     for (var i = 2; i < 8; i++) {
         $.getJSON("https://spreadsheets.google.com/feeds/cells/1ouyI7JWT2agLynYywzFkqnOzID8u9Q5FeSR1ZhPz1Rk/" + i + "/public/basic?alt=json-in-script&callback=?")
             .done(function(data) {
-
                 var path = window.location.pathname;
-                path = path.replace("/", "");
+                // console.log(window.location);
+                // console.log("Path: " + path);
+
                 path = path.replace("html", "");
                 path = path.replace(".", "");
+                if (path === "/"){
+                  path = "index";
+                }
+                path = path.replace("/", "");
                 var thisFeed = data.feed;
                 var title = thisFeed.title.$t.toLowerCase();
+                // console.log("Path: " + path);
+                // console.log("Title: " + title);
                 if ((path === title) || title === "master-template") {
                     populatePage(data);
                 }
