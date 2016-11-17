@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     for (var i = 2; i < 8; i++) {
         $.getJSON("https://spreadsheets.google.com/feeds/cells/1ouyI7JWT2agLynYywzFkqnOzID8u9Q5FeSR1ZhPz1Rk/" + i + "/public/basic?alt=json-in-script&callback=?")
             .done(function(data) {
@@ -31,6 +30,7 @@ $(document).ready(function() {
 function populatePage(data) {
     var thisFeed = data.feed;
     var title = thisFeed.title.$t.toLowerCase();
+
 
     importTemplate(thisFeed, title);
 
@@ -77,178 +77,85 @@ function newPosts(feed, title) {
     var template = null;
     var context = {};
     var html = null;
+    var $templateContainer = null;
+    var i = 0;
+
+
 
     if ((title === "events") || (title === "announcements")) {
         source = $("#" + title + "-entry-template").html();
         template = Handlebars.compile(source);
 
 
-        for (var i = 0; i < entryArray.length; i++) {
+        for (i = 0; i < entryArray.length; i++) {
+            workingObject = summaryObject.rowEntryArray[i];
+            context = workingObject;
+            html = template(context);
+            parentSection.append($(html)[0]);
+
+        }
+
+    } else if (title === "membership") {
+        var count = 0;
+        for (i = 0; i < entryArray.length; i++) {
+            workingObject = summaryObject.rowEntryArray[i];
+            $templateContainer = $('<div class="row well flex"></div>');
+
+            source4 = $("#" + title + "-4-entry-template").html();
+            source8 = $("#" + title + "-8-entry-template").html();
+            template4 = Handlebars.compile(source4);
+            template8 = Handlebars.compile(source8);
+            context = workingObject;
+
+            html4 = template4(context);
+            html8 = template8(context);
+
+            if (count % 2 === 0) {
+                $templateContainer.append(html8);
+                $templateContainer.append(html4);
+            } else {
+                $templateContainer.append(html4);
+                $templateContainer.append(html8);
+            }
+            count += 1;
+
+            parentSection.append($templateContainer[0]);
+        }
+
+    } else if (title === "officers") {
+        $templateContainer = $('<div class="row flex"></div>');
+        for (i = 0; i < entryArray.length; i++) {
+            workingObject = summaryObject.rowEntryArray[i];
+
+            source = $("#" + title + "-entry-template").html();
+            template = Handlebars.compile(source);
+            context = workingObject;
+            html = template(context);
+
+            $templateContainer.append(html);
+
+        }
+
+        parentSection.append($templateContainer[0]);
+    } else if (title === "index") {
+        $templateContainer = $('<div class="row"></div>');
+        source = $("#" + title + "-entry-template").html();
+        template = Handlebars.compile(source);
+
+        for (i = 0; i < entryArray.length; i++) {
             workingObject = summaryObject.rowEntryArray[i];
             context = workingObject;
             html = template(context);
 
-            // var $media = $('<div class="media"></div>');
-            // var $mediaLeft = $('<div class="media-left "></div>');
-            // var $mediaImage = $('<img class="media-object" src="' + workingObject.image + '" alt="' + workingObject.title + '">');
-            // $mediaLeft.append($mediaImage);
-            // $media.append($mediaLeft);
-            //
-            //
-            // var $mediaBody = $('<div class="media-body"></div>');
-            // var $h3 = $('<h3 class="media-heading">' + workingObject.date + '</h3>');
-            // $mediaBody.append($h3);
-            //
-            // var $h2 = $('<h2 class="media-heading">' + workingObject.title + '</h2>');
-            // $mediaBody.append($h2);
-            //
-            //
-            //
-            // var contentArr = workingObject.content;
-            // var $p = null;
-            // if (contentArr.constructor === Array) {
-            //     for (var j = 0; j < contentArr.length; j++) {
-            //         var thisContent = contentArr[j];
-            //         $p = $('<p>' + thisContent + '</p>');
-            //         $mediaBody.append($p);
-            //     }
-            // } else {
-            //     $p = $('<p>' + contentArr + '</p>');
-            //     $mediaBody.append($p);
-            //
-            // }
-            //
-            //
-            // if (workingObject.venue && workingObject.address) {
-            //     var $address = $('<address>' + '<a href="' + workingObject["venue-link"] + '" target="_blank">' + workingObject.venue + '</a> ' + workingObject.address + '</address>');
-            //     $mediaBody.append($address);
-            // }
-            //
-            //
-            // if (workingObject['fb-link']) {
-            //     var $facebook = $('<a href="' + workingObject['fb-link'] + '" target="_blank"><p>Click to RSVP on our Facebook event</p></a>');
-            //     $mediaBody.append($facebook);
-            // }
-            //
-            // $media.append($mediaBody);
-            // var $wellDiv = $('<div class = "well well-lg announcement"></div>');
-            // $wellDiv.append($media);
-
-            parentSection.append($(html)[0]);
-        }
-    } else if (title === "membership") {
-        var count = 0;
-        for (var k = 0; k < entryArray.length; k++) {
-            workingObject = summaryObject.rowEntryArray[k];
-            var $rowWell = $('<div class="row well flex"></div>');
-
-            var $col8 = $('<div class="col-sm-8"></div>');
-            var $h2Center = $('<h2 class="text-center">' + workingObject.title + '</h2>');
-            var $divFlex = $('<div class="flex"></div>');
-            var $aBtn = $('<a class="btn btn-primary" href="' + workingObject['btn-link'] + '" target="_blank" role="button">' + workingObject['btn-text'] + '</a>');
-            $col8.append($h2Center);
-
-            var textArr = workingObject.content;
-            var $pText = null;
-            if (textArr.constructor === Array) {
-                for (var l = 0; l < textArr.length; l++) {
-                    var content = textArr[l];
-                    $pText = $('<p>' + content + '</p>');
-                    $col8.append($pText);
-                }
-            } else {
-                $pText = $('<p>' + textArr + '</p>');
-                $col8.append($pText);
-            }
-
-
-
-
-            $divFlex.append($aBtn);
-            $col8.append($divFlex);
-
-            var $col4 = $('<div class="col-sm-4"></div>');
-            var $img = $('<img class = "img-responsive center-block" src="' + workingObject.image + '"/>');
-            $col4.append($img);
-            if (count % 2 === 0) {
-                $rowWell.append($col8);
-                $rowWell.append($col4);
-            } else {
-                $rowWell.append($col4);
-                $rowWell.append($col8);
-            }
-            count += 1;
-            parentSection.append($rowWell[0]);
-        }
-
-    } else if (title === "officers") {
-        var $standardRow = $('<div class="row flex"></div>');
-        for (var m = 0; m < entryArray.length; m++) {
-            workingObject = summaryObject.rowEntryArray[m];
-
-
-            var $col = $('<div class="col-sm-6 col-md-4 column"></div>');
-            var $thumbnail = $('<div class="thumbnail flex"></div>');
-            $col.append($thumbnail);
-
-            var $h2Centered = $('<h2 class="text-center">' + workingObject.title + '</h2>');
-            var $h3Centered = $('<h3 class="text-center">' + workingObject.name + '</h3>');
-            var $officerImg = $('<img class = "img-responsive" src="' + workingObject['photo-link'] + '" alt="' + workingObject.name + '"/>');
-            $thumbnail.append($h2Centered);
-            $thumbnail.append($h3Centered);
-            $thumbnail.append($officerImg);
-
-            var $caption = $('<div class="caption"></div>');
-            var $h4 = $('<h4>' + workingObject['fun-fact-heading'] + '</h4>');
-            var $pFunFact = $('<p>' + workingObject['fun-fact'] + '</p>');
-            $caption.append($h4);
-            $caption.append($pFunFact);
-
-            $thumbnail.append($caption);
-
-            $standardRow.append($col);
-
-
+            $templateContainer.append(html);
 
         }
-        parentSection.append($standardRow[0]);
-
-    } else if (title === "index") {
-        var $stdRow = $('<div class="row"></div>');
-        source = $("#" + title + "-entry-template").html();
-        template = Handlebars.compile(source);
-
-
-        for (var n = 0; n < entryArray.length; n++) {
-            workingObject = summaryObject.rowEntryArray[n];
-            context = workingObject;
-            html = template(context);
-
-            // var $col3 = $('<div class="col-sm-6 col-md-3"></div>');
-            // var $aThumb = $('<a href="' + workingObject.title.toLowerCase() + '.html"></a>');
-            // $col3.append($aThumb);
-            //
-            // var $flexThumb = $('<div class="thumbnail flex"></div>');
-            // $aThumb.append($flexThumb);
-            //
-            // var $thumbImage = $('<img src="' + workingObject['photo-link'] + '" alt="' + workingObject.title + '">');
-            // $flexThumb.append($thumbImage);
-            //
-            // var $divCaption = $('<div class="caption"></div>');
-            // $flexThumb.append($divCaption);
-            //
-            // var $captionH3 = $('<h3>' + workingObject.title + '</h3>');
-            // var $captionP = $('<p>' + workingObject.description + '</p>');
-            // $divCaption.append($captionH3);
-            // $divCaption.append($captionP);
-
-            $stdRow.append(html);
-
-        }
-        parentSection.append($stdRow[0]);
-
+        parentSection.append($templateContainer[0]);
     }
 
+
+    var $activeTag = $(".activate-me");
+    $activeTag.addClass("active");
 
 }
 

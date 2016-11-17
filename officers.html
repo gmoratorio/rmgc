@@ -33,7 +33,7 @@
                   <li><a class="global-second-page-tag-text" href="announcements.html"></a></li>
                   <li><a class="global-third-page-tag-text" href="events.html"></a></li>
                   <li><a class="global-fourth-page-tag-text" href="membership.html"></a></li>
-                  <li class="active"><a class="global-fifth-page-tag-text" href="officers.html"></a></li>
+                  <li class="activate-me"><a class="global-fifth-page-tag-text" href="officers.html"></a></li>
                 </ul>
             </div>
         </nav>
@@ -69,6 +69,22 @@
         </nav>
 
     </footer>
+
+    <script id="officers-entry-template" type="text/x-handlebars-template">
+
+          <div class="col-sm-6 col-md-4 column">
+              <div class="thumbnail flex">
+                  <h2 class="text-center">{{title}}</h2>
+                  <h3 class="text-center">{{name}}</h3>
+                  <img class="img-responsive" src="{{photo-link}}" alt="{{name}}">
+                  <div class="caption">
+                      <h4>{{fun-fact-heading}}</h4>
+                      <p>{{fun-fact}}</p>
+                  </div>
+              </div>
+          </div>
+
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
