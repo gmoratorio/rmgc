@@ -59,60 +59,6 @@
         </div>
         <section class="container-fluid figures index">
 
-
-
-            <!-- <div class="row">
-                <div class="col-sm-6 col-md-3">
-                    <a href="announcements.html">
-                        <div class="thumbnail flex">
-                            <img src="https://s-media-cache-ak0.pinimg.com/originals/58/3b/da/583bda9bbb210f7aba23a598bb95e557.jpg" alt="Announcements">
-                            <div class="caption">
-                                <h3>Announcements</h3>
-                                <p>Check out the latest news!</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-sm-6 col-md-3">
-                    <a href="events.html">
-                        <div class="thumbnail flex">
-                            <img src="https://s3-us-west-2.amazonaws.com/rmgc-web-images/Rival+Images/UF+v+LSU.jpg" alt="Announcements">
-                            <div class="caption">
-                                <h3>Events</h3>
-                                <p>Come meet up with us!</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-sm-6 col-md-3">
-                    <a href="membership.html">
-                        <div class="thumbnail flex">
-                            <img src="https://s3-us-west-2.amazonaws.com/rmgc-web-images/Template+Images/ski-day.jpg" alt="Gator Ski Day">
-                            <div class="caption">
-                                <h3>Membership</h3>
-                                <p>Get Involved! Click for more info on how to get involved with the RMGC.</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-sm-6 col-md-3">
-                    <a href="officers.html">
-                        <div class="thumbnail flex">
-                            <img src="https://s3-us-west-2.amazonaws.com/rmgc-web-images/Officers/01+President+-+Dave+Zsembik.jpg" alt="RMGC Officers">
-                            <div class="caption">
-                                <h3>Officers</h3>
-                                <p>Meet our officers!</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-            </div> -->
-
-
         </section>
 
 
@@ -128,10 +74,26 @@
         </nav>
 
     </footer>
+    <script id="index-entry-template" type="text/x-handlebars-template">
+      <div class="col-sm-6 col-md-3">
+          <a href="{{page-link}}.html">
+              <div class="thumbnail flex">
+                  <img src="{{photo-link}}" alt="{{title}}">
+                  <div class="caption">
+                      <h3>{{title}}</h3>
+                      <p>{{description}}</p>
+                  </div>
+              </div>
+          </a>
+      </div>
+    </script>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
     <script src="assets/scripts/app.js"></script>
+
 </body>
 
 </html>

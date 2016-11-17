@@ -4,19 +4,15 @@ $(document).ready(function() {
         $.getJSON("https://spreadsheets.google.com/feeds/cells/1ouyI7JWT2agLynYywzFkqnOzID8u9Q5FeSR1ZhPz1Rk/" + i + "/public/basic?alt=json-in-script&callback=?")
             .done(function(data) {
                 var path = window.location.pathname;
-                // console.log(window.location);
-                // console.log("Path: " + path);
 
                 path = path.replace("html", "");
                 path = path.replace(".", "");
-                if (path === "/"){
-                  path = "index";
+                if (path === "/") {
+                    path = "index";
                 }
                 path = path.replace("/", "");
                 var thisFeed = data.feed;
                 var title = thisFeed.title.$t.toLowerCase();
-                // console.log("Path: " + path);
-                // console.log("Title: " + title);
                 if ((path === title) || title === "master-template") {
                     populatePage(data);
                 }
@@ -72,56 +68,73 @@ function importTemplate(feed, title) {
 
 function newPosts(feed, title) {
 
-    var $parentSection = $("." + title)[0];
+    var parentSection = $("." + title)[0];
     var objArr = feed.entry;
     var summaryObject = returnSummaryObject(objArr, "append");
     var entryArray = summaryObject.rowEntryArray;
     var workingObject = {};
+    var source = null;
+    var template = null;
+    var context = {};
+    var html = null;
+
     if ((title === "events") || (title === "announcements")) {
+        source = $("#" + title + "-entry-template").html();
+        template = Handlebars.compile(source);
+
+
         for (var i = 0; i < entryArray.length; i++) {
             workingObject = summaryObject.rowEntryArray[i];
+            context = workingObject;
+            html = template(context);
 
-            var $media = $('<div class="media"></div>');
-            var $mediaLeft = $('<div class="media-left "></div>');
-            var $mediaImage = $('<img class="media-object" src="' + workingObject.image + '" alt="' + workingObject.title + '">');
-            $mediaLeft.append($mediaImage);
-            $media.append($mediaLeft);
+            // var $media = $('<div class="media"></div>');
+            // var $mediaLeft = $('<div class="media-left "></div>');
+            // var $mediaImage = $('<img class="media-object" src="' + workingObject.image + '" alt="' + workingObject.title + '">');
+            // $mediaLeft.append($mediaImage);
+            // $media.append($mediaLeft);
+            //
+            //
+            // var $mediaBody = $('<div class="media-body"></div>');
+            // var $h3 = $('<h3 class="media-heading">' + workingObject.date + '</h3>');
+            // $mediaBody.append($h3);
+            //
+            // var $h2 = $('<h2 class="media-heading">' + workingObject.title + '</h2>');
+            // $mediaBody.append($h2);
+            //
+            //
+            //
+            // var contentArr = workingObject.content;
+            // var $p = null;
+            // if (contentArr.constructor === Array) {
+            //     for (var j = 0; j < contentArr.length; j++) {
+            //         var thisContent = contentArr[j];
+            //         $p = $('<p>' + thisContent + '</p>');
+            //         $mediaBody.append($p);
+            //     }
+            // } else {
+            //     $p = $('<p>' + contentArr + '</p>');
+            //     $mediaBody.append($p);
+            //
+            // }
+            //
+            //
+            // if (workingObject.venue && workingObject.address) {
+            //     var $address = $('<address>' + '<a href="' + workingObject["venue-link"] + '" target="_blank">' + workingObject.venue + '</a> ' + workingObject.address + '</address>');
+            //     $mediaBody.append($address);
+            // }
+            //
+            //
+            // if (workingObject['fb-link']) {
+            //     var $facebook = $('<a href="' + workingObject['fb-link'] + '" target="_blank"><p>Click to RSVP on our Facebook event</p></a>');
+            //     $mediaBody.append($facebook);
+            // }
+            //
+            // $media.append($mediaBody);
+            // var $wellDiv = $('<div class = "well well-lg announcement"></div>');
+            // $wellDiv.append($media);
 
-
-            var $mediaBody = $('<div class="media-body"></div>');
-            var $h3 = $('<h3 class="media-heading">' + workingObject.date + '</h3>');
-            $mediaBody.append($h3);
-
-            var $h2 = $('<h2 class="media-heading">' + workingObject.title + '</h2>');
-            $mediaBody.append($h2);
-
-
-
-            var contentArr = workingObject.content;
-            for (var j = 0; j < contentArr.length; j++) {
-                var thisContent = contentArr[j];
-                var $p = $('<p>' + thisContent + '</p>');
-                $mediaBody.append($p);
-            }
-
-            if (workingObject.venue && workingObject.address) {
-                var $address = $('<address>' + '<a href="' + workingObject["venue-link"] + '" target="_blank">' + workingObject.venue + '</a> ' + workingObject.address + '</address>');
-                $mediaBody.append($address);
-            }
-
-
-            if (workingObject['fb-link']) {
-                var $facebook = $('<a href="' + workingObject['fb-link'] + '" target="_blank"><p>Click to RSVP on our Facebook event</p></a>');
-                $mediaBody.append($facebook);
-            }
-
-            $media.append($mediaBody);
-            // debugger;
-            var $wellDiv = $('<div class = "well well-lg announcement"></div>');
-            $wellDiv.append($media);
-            // console.log($wellDiv[0]);
-
-            $parentSection.append($wellDiv[0]);
+            parentSection.append($(html)[0]);
         }
     } else if (title === "membership") {
         var count = 0;
@@ -136,11 +149,21 @@ function newPosts(feed, title) {
             $col8.append($h2Center);
 
             var textArr = workingObject.content;
-            for (var l = 0; l < textArr.length; l++) {
-                var content = textArr[l];
-                var $pText = $('<p>' + content + '</p>');
+            var $pText = null;
+            if (textArr.constructor === Array) {
+                for (var l = 0; l < textArr.length; l++) {
+                    var content = textArr[l];
+                    $pText = $('<p>' + content + '</p>');
+                    $col8.append($pText);
+                }
+            } else {
+                $pText = $('<p>' + textArr + '</p>');
                 $col8.append($pText);
             }
+
+
+
+
             $divFlex.append($aBtn);
             $col8.append($divFlex);
 
@@ -155,7 +178,7 @@ function newPosts(feed, title) {
                 $rowWell.append($col8);
             }
             count += 1;
-            $parentSection.append($rowWell[0]);
+            parentSection.append($rowWell[0]);
         }
 
     } else if (title === "officers") {
@@ -188,35 +211,41 @@ function newPosts(feed, title) {
 
 
         }
-        $parentSection.append($standardRow[0]);
+        parentSection.append($standardRow[0]);
 
     } else if (title === "index") {
         var $stdRow = $('<div class="row"></div>');
+        source = $("#" + title + "-entry-template").html();
+        template = Handlebars.compile(source);
+
 
         for (var n = 0; n < entryArray.length; n++) {
             workingObject = summaryObject.rowEntryArray[n];
-            var $col3 = $('<div class="col-sm-6 col-md-3"></div>');
-            var $aThumb = $('<a href="' + workingObject.title.toLowerCase() + '.html"></a>');
-            $col3.append($aThumb);
+            context = workingObject;
+            html = template(context);
 
-            var $flexThumb = $('<div class="thumbnail flex"></div>');
-            $aThumb.append($flexThumb);
+            // var $col3 = $('<div class="col-sm-6 col-md-3"></div>');
+            // var $aThumb = $('<a href="' + workingObject.title.toLowerCase() + '.html"></a>');
+            // $col3.append($aThumb);
+            //
+            // var $flexThumb = $('<div class="thumbnail flex"></div>');
+            // $aThumb.append($flexThumb);
+            //
+            // var $thumbImage = $('<img src="' + workingObject['photo-link'] + '" alt="' + workingObject.title + '">');
+            // $flexThumb.append($thumbImage);
+            //
+            // var $divCaption = $('<div class="caption"></div>');
+            // $flexThumb.append($divCaption);
+            //
+            // var $captionH3 = $('<h3>' + workingObject.title + '</h3>');
+            // var $captionP = $('<p>' + workingObject.description + '</p>');
+            // $divCaption.append($captionH3);
+            // $divCaption.append($captionP);
 
-            var $thumbImage = $('<img src="' + workingObject['photo-link'] + '" alt="' + workingObject.title + '">');
-            $flexThumb.append($thumbImage);
-
-            var $divCaption = $('<div class="caption"></div>');
-            $flexThumb.append($divCaption);
-
-            var $captionH3 = $('<h3>' + workingObject.title + '</h3>');
-            var $captionP = $('<p>' + workingObject.description + '</p>');
-            $divCaption.append($captionH3);
-            $divCaption.append($captionP);
-
-            $stdRow.append($col3);
+            $stdRow.append(html);
 
         }
-        $parentSection.append($stdRow[0]);
+        parentSection.append($stdRow[0]);
 
     }
 
@@ -268,7 +297,6 @@ function returnSummaryObject(objectArray, type) {
     var start = 0;
     var end = 0;
     var endTemplateIndex = 0;
-    // debugger;
     for (var h = 0; h < objectArray.length; h++) {
         var currentCell = objectArray[h];
         var currentContent = currentCell.content.$t;
@@ -280,12 +308,12 @@ function returnSummaryObject(objectArray, type) {
             lastRow = row;
         }
 
-
         if (currentContent === "end-template") {
             endTemplateIndex = h;
             break;
         }
     }
+
 
     if (type === "template") {
         start = 0;
@@ -295,7 +323,8 @@ function returnSummaryObject(objectArray, type) {
         end = objectArray.length;
 
     }
-    // debugger;
+
+
     lastRow = 0;
     for (var i = start; i < end; i++) {
         row = 0;
@@ -305,22 +334,24 @@ function returnSummaryObject(objectArray, type) {
         var cellContent = thisObj.content.$t;
         row = returnRow(cellTitle);
         column = returnColumn(cellTitle);
+
         if (i === start) {
             summaryObject.dataType = cellContent;
         } else if (i === start + 1) {
             headerRow = row;
             countOfRows += 1;
-
         }
+
+
         if (row === headerRow) {
             headerLength += 1;
             headerArr.push(cellContent);
-
         } else if (row !== lastRow) {
             countOfRows += 1;
             lastRow = row;
         }
     }
+
 
     summaryObject.headerArr = headerArr;
     summaryObject.countOfRows = countOfRows;
@@ -336,6 +367,7 @@ function returnSummaryObject(objectArray, type) {
 
     while (rowCount < summaryObject.countOfRows + 1) {
         var thisEntryObj = {};
+        thisEntryObj.contentIsString = true;
         for (var k = 0; k < summaryObject.countOfColumns; j++, k++) {
             var thisEntry = objectArray[j];
             var title = thisEntry.title.$t;
@@ -346,32 +378,39 @@ function returnSummaryObject(objectArray, type) {
             var header = summaryObject.headerArr[k];
             row = returnRow(title);
             column = returnColumn(title);
-            if (column !== lastColumn) {
 
+            if (column !== lastColumn) {
                 thisEntryObj[header] = content;
                 lastColumn = returnColumn(title);
             } else if (column === lastColumn) {
+
                 var holdP = thisEntryObj[header];
+
                 if (holdP.constructor === Array) {
                     thisEntryObj[header].push(content);
                 } else {
                     thisEntryObj[header] = [holdP];
                     thisEntryObj[header].push(content);
                 }
+
                 rowCount += 1;
             }
+
+
             if (j < objectArray.length - 1) {
                 nextColumn = returnColumn(objectArray[j + 1].title.$t);
                 if (column === nextColumn) {
+                    thisEntryObj.contentIsString = false;
                     k--;
                 }
             }
 
         }
+
         summaryObject.rowEntryArray.push(thisEntryObj);
         rowCount += 1;
 
     }
-
     return summaryObject;
+
 }
