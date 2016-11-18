@@ -89,6 +89,22 @@ function newPosts(feed, title) {
 
         for (i = 0; i < entryArray.length; i++) {
             workingObject = summaryObject.rowEntryArray[i];
+
+            if (workingObject.venue && workingObject.address) {
+              workingObject.hasVenueAndAddress = true;
+            }
+            else{
+              workingObject.hasVenueAndAddress = false;
+            }
+
+            if (workingObject['fb-link'] !== "#") {
+              workingObject.hasFBLink = true;
+            }
+            else{
+              workingObject.hasFBLink = false;
+            }
+
+
             context = workingObject;
             html = template(context);
             parentSection.append($(html)[0]);

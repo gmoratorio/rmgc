@@ -84,9 +84,24 @@
                 <p>{{this}}</p>
               {{/each}}
             {{/if}}
+
+            {{#if hasVenueAndAddress}}
+              <address>
+                <a href="{{venue-link}}" target="_blank"> {{venue}}</a>
+                {{address}}
+              </address>
+            {{/if}}
+
+            {{#if hasFBLink}}
+              <a href="{{fb-link}}" target="_blank"><p>Click to RSVP on our Facebook event</p></a>
+            {{/if}}
           </div>
         </div>
       </div>
+
+  
+
+
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
