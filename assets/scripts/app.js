@@ -169,7 +169,6 @@ function newPosts(feed, title) {
         parentSection.append($templateContainer[0]);
     }
 
-
     var $activeTag = $(".activate-me");
     $activeTag.addClass("active");
 
