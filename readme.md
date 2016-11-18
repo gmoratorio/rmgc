@@ -5,6 +5,8 @@ Below is the information you'll need to keep your RMGC page updated using the Ad
 **ADMIN LINK:** Below is the link to the Google Sheets page which controls the entire page. The landing page is the README:
 https://docs.google.com/spreadsheets/d/1ouyI7JWT2agLynYywzFkqnOzID8u9Q5FeSR1ZhPz1Rk/edit#gid=645110822
 
+**LIVE SITE:** The currently live site, being powered by the above Google Sheet can be found below:
+https://www.rmgatorclub.com
 
 
 ### What NOT to do...
