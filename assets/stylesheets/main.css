@@ -10,14 +10,25 @@ Grid styles
 */
 
 
+/**, *:before, *:after {*/
+
+
+/*-webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;*/
+
+
+/*max-width: 100%;
+  max-height: 100%; }*/
 
 .flex {
     display: flex;
 }
 
 .padding {
-    padding-left: 5vw;
-    padding-right: 5vw;
+    padding-left: 7em;
+    padding-right: 7em;
 }
 
 body {
@@ -27,11 +38,45 @@ body {
 
 /*
 ====
+Typography
+====
+*/
+
+
+/*
+====
+Buttons
+====
+*/
+
+
+/*
+====
+Links
+====
+*/
+
+
+/*
+====
+Navigation
+====
+*/
+
+
+/*
+====
+Images
+*/
+
+
+/*
+====
 Header
 ====
 */
 .navbar{
-  height:10vh;
+  height:5em;
 }
 
 .navbar-right {
@@ -42,7 +87,7 @@ Header
 .navbar-brand {
     box-sizing: border-box;
     padding: .50em;
-    height: 20vh;
+    height: 8em;
 }
 
 .navbar-brand img {
@@ -50,6 +95,10 @@ Header
     max-height: 100%;
 }
 
+.shrink {
+    height: 7em;
+    font-size: 1em;
+}
 
 
 /*
@@ -58,10 +107,38 @@ Main body
 ====
 */
 
+main {
+    /*margin-top: 13em;*/
+}
+
+.jumbotron .events {
+    height: 100%;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom:0;
+}
+
+
+
 .jumbotron h1{
   text-align: center;
   color: #ffffff;
   margin:auto;
+}
+
+div.events h3, div.events p {
+    background-color: #033c73;
+    border-radius: 0.25em;
+    color: white;
+    padding: 0.25em;
+    text-align: center;
+
+}
+
+.hover {
+  color: #ffffff !important;
+  background-color: #022f5a !important;
 }
 
 a, a:hover {
@@ -75,39 +152,24 @@ a, a:hover {
     height: 100vh;
     flex-direction: column;
     justify-content:space-around;
-    margin-bottom: 20vh;
+    margin-bottom: 10%;
     padding:0;
 }
 
 .jumbotron.sub-page-size{
   height: 50vh;
-  margin-bottom: 8vh;
+  margin-bottom: 3%;
 }
 
 hgroup{
   margin:auto;
 }
 
-
-/*
-====
-Standard Thumbnails
-====
-*/
+/*Standard Thumbnails*/
 .thumbnail{
-  min-height: 30vh;
+  min-height: 55vh;
   flex-direction: column;
   justify-content: space-between;
-}
-
-@media screen and (min-width: 1000px){
-    .thumbnail{
-    min-height: 50vh;
-    }
-}
-
-.thumbnail figure{
-  height: 40%;
 }
 
 .thumbnail img{
@@ -117,20 +179,15 @@ Standard Thumbnails
 }
 
 .caption{
-  height: 40%;
+  min-height: 9em;
+
 }
 
 section.figures{
-   margin-bottom: 5vh;
+   margin-bottom: 3%;
 }
 
-
-
-/*
-====
-Announcements and Events Posts
-====
-*/
+/*Announcement Thumbnails*/
 
 .thumbnail.announcement {
   min-height: 55vh;
@@ -148,13 +205,10 @@ Announcements and Events Posts
 
 .announcement.caption{
   min-height: 9em;
+
 }
 
-/*
-====
-Membership
-====
-*/
+/*Membership Images*/
 
 
 .membership div.flex{
@@ -167,12 +221,7 @@ Membership
 }
 
 
-/*
-====
-Officers
-====
-*/
-
+/*Officers*/
 .officers .thumbnail h2{
   margin-bottom: 0;
   padding-bottom: 0;
@@ -211,13 +260,7 @@ section.container-fluid.figures.officers{
 .officers div.thumbnail.flex{
   flex-direction: column;
   justify-content:flex-start;
-  height: 40vh;
-}
-
-@media screen and (min-width: 1000px){
-    .officers div.thumbnail.flex{
-    min-height: 80vh;
-    }
+  height: 80vh;
 }
 
 .officers .thumbnail .caption {
@@ -228,6 +271,9 @@ section.container-fluid.figures.officers{
 .officers .thumbnail p{
   height:80%;
   overflow: scroll;
+
+
+
 }
 
 /*
