@@ -10,30 +10,18 @@ Grid styles
 */
 
 
-/**, *:before, *:after {*/
-
-
-/*-webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;*/
-
-
-/*max-width: 100%;
-  max-height: 100%; }*/
 
 .flex {
     display: flex;
 }
 
 .padding {
-    padding-left: 7em;
-    padding-right: 7em;
+    padding-left: 5vw;
+    padding-right: 5vw;
 }
 
 body {
     height: 100vh;
-    /*background-color: #317eac;*/
 }
 
 
@@ -135,11 +123,6 @@ div.events h3, div.events p {
     padding: 0.25em;
     text-align: center;
 
-}
-
-.hover {
-  color: #ffffff !important;
-  background-color: #022f5a !important;
 }
 
 a, a:hover {
